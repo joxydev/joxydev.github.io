@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JoxyDev — Portfolio</title>
+  <meta name="description" content="JoxyDev — Junior Data Scientist & Python Developer. AI, automation, data, desktop apps." />
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --card: #121826;
+      --accent: #4da3ff;
+      --text: #e6eaf2;
+      --muted: #9aa4bf;
+      --border: #1f2940;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(1200px 600px at 20% -10%, #14203a 0%, transparent 60%),
+                  radial-gradient(800px 400px at 100% 10%, #0f3a4a 0%, transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 48px 24px; }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 64px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      color: var(--muted);
+      max-width: 640px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(77,163,255,0.08);
+      color: var(--accent);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, #4da3ff, #7bc1ff);
+      color: #0b0f14;
+      border: none;
+      font-weight: 600;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+
+    section { margin-bottom: 64px; }
+    section h2 {
+      font-size: 28px;
+      margin-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .card h3 { margin-bottom: 8px; font-size: 18px; }
+    .card p { color: var(--muted); font-size: 14px; }
+
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tag {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @media (max-width: 720px) {
+      header { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div class="hero">
+        <span class="badge">Junior • Python • AI • Data</span>
+        <h1>JoxyDev</h1>
+        <p>
+          Junior Data Scientist & Python Developer. I build automation tools, data-driven applications
+          and AI-powered solutions. Focused on practical projects: desktop apps, monitoring systems,
+          voice interfaces and LLM integrations.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="#projects">View Projects</a>
+          <a class="btn" href="https://github.com/" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="skills">
+      <h2>Core Skills</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Python Development</h3>
+          <p>Automation scripts, desktop applications, data processing, API integrations.</p>
+          <div class="stack">
+            <span class="tag">Python</span>
+            <span class="tag">tkinter</span>
+            <span class="tag">REST API</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Data & ML Basics</h3>
+          <p>Data analysis, basic statistics, understanding ML pipelines and neural networks.</p>
+          <div class="stack">
+            <span class="tag">pandas</span>
+            <span class="tag">Data Analysis</span>
+            <span class="tag">ML basics</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>AI & Automation</h3>
+          <p>LLM integration, speech-to-text / text-to-speech, workflow automation.</p>
+          <div class="stack">
+            <span class="tag">LLM</span>
+            <span class="tag">STT / TTS</span>
+            <span class="tag">Automation</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Portfolio Projects</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Real-time Voice Translator</h3>
+          <p>
+            Desktop application for real-time speech translation between two languages
+            with voice selection, themes and external API support.
+          </p>
+          <div class="stack">
+            <span class="tag">Python</span>
+            <span class="tag">STT / TTS</span>
+            <span class="tag">Desktop App</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Website Monitoring Tool</h3>
+          <p>
+            Python application that monitors a website and saves selected data
+            to a file in real time.
+          </p>
+          <div class="stack">
+            <span class="tag">Python</span>
+            <span class="tag">Parsing</span>
+            <span class="tag">Automation</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>LLM & AI Experiments</h3>
+          <p>
+            Practical experiments with large language models, AI agents and
+            integration into real workflows.
+          </p>
+          <div class="stack">
+            <span class="tag">LLM</span>
+            <span class="tag">AI</span>
+            <span class="tag">Prototyping</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Bug Bounty Research</h3>
+          <p>
+            Testing logical and web vulnerabilities (IDOR, SSRF, XSS)
+            in VK Mini Apps environment.
+          </p>
+          <div class="stack">
+            <span class="tag">Security</span>
+            <span class="tag">Web</span>
+            <span class="tag">Research</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        © 2026 JoxyDev
+      </div>
+      <div>
+        Open for remote work · Junior / Entry-level
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
