@@ -1,0 +1,217 @@
+:root{
+  /* dark-theme base with subtle layered blue spots */
+  --bg: radial-gradient(800px 380px at 6% 18%, rgba(77,163,255,0.06), transparent 26%),
+         radial-gradient(700px 300px at 94% 78%, rgba(77,163,255,0.05), transparent 30%),
+         radial-gradient(500px 420px at 50% 40%, rgba(77,163,255,0.04), transparent 45%),
+         #0b0f14;
+  --card:#121826;
+  --accent:#4da3ff;
+  --accent-btn:#2b7ecf;
+  --text:#e6eaf2;
+  --muted:#9aa4bf;
+  --border:#1f2940;
+}
+
+[data-theme="light"]{
+  /* layered soft background with subtle bluish spots */
+  --bg: radial-gradient(800px 360px at 8% 12%, rgba(52,102,242,0.05), transparent 26%),
+         radial-gradient(600px 300px at 92% 80%, rgba(52,102,242,0.04), transparent 26%),
+         #eef2f6;
+  --card: #ffffff;
+  --accent: #3466f2;
+  --accent-btn: #3466f2;
+  --text: #0f1724; /* slightly softened black for better readability */
+  --muted: #475569; /* darker muted text */
+  --border: rgba(15,23,42,0.08); /* slightly stronger border on light theme */
+}
+
+/* global layout */
+.smooth-transition{transition:background-color 220ms ease,color 220ms ease,border-color 220ms ease,box-shadow 220ms ease}
+body{font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover;color:var(--text);min-height:100vh;padding:24px}
+.wrap,.container{max-width:980px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--border);padding:18px;border-radius:12px}
+select,input,button,textarea{padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+.row{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{padding:8px;text-align:left;border-bottom:1px solid rgba(0,0,0,0.06);color:var(--muted)}
+canvas{width:100%;height:80px;background:rgba(7,16,24,0.6);border-radius:6px;display:block}
+a{color:var(--accent)}
+
+/* small helpers */
+.muted{color:var(--muted)}
+.controls{display:flex;gap:8px;align-items:center;margin:12px 0}
+.editor{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#preview{min-height:160px;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--card)}
+.highlight{background:linear-gradient(90deg,rgba(52,102,242,0.15),rgba(52,102,242,0.05));border-bottom:2px solid rgba(52,102,242,0.35)}
+
+/* theme toggle button (desktop: large sun-like button on left) */
+#themeToggle{position:fixed;left:24px;top:180px;width:96px;height:96px;padding:0;border-radius:50%;border:2px solid rgba(255,200,70,0.22);background:radial-gradient(circle at 35% 30%, #fff6b8 0%, #ffd54f 18%, #ffb300 45%, #ff9800 100%);color:var(--text);cursor:pointer;z-index:1100;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 10px 30px rgba(255,165,0,0.14), inset 0 6px 18px rgba(255,255,255,0.18)}
+/* icon sizing inside the sun/moon button */
+#themeToggle{font-size:48px;line-height:1;transition:background 420ms ease, box-shadow 420ms ease, border-color 420ms ease}
+
+/* inner icon rendered by pseudo-element (so we can animate it separately) */
+#themeToggle::before{
+  content: attr(data-icon);
+  position:relative;
+  z-index:2;
+  font-size:48px;
+  line-height:1;
+  transform-origin:center;
+  display:inline-block;
+  transition:transform 360ms cubic-bezier(.2,.9,.2,1), opacity 320ms ease;
+  opacity:1;
+}
+
+/* sun look: subtle halo */
+#themeToggle::after{content:"";position:absolute;inset:auto;left:-18px;top:-18px;width:132px;height:132px;border-radius:50%;filter:blur(18px);background:radial-gradient(circle, rgba(255,200,70,0.18), transparent 40%);pointer-events:none}
+
+/* circular focus / accessibility styling */
+#themeToggle:focus{outline:none}
+#themeToggle:focus-visible{box-shadow:0 0 0 6px rgba(255,200,70,0.18);border-color:rgba(255,200,70,0.6)}
+
+/* hover / active surfaces */
+#themeToggle:hover{transform:translateY(-3px);box-shadow:0 18px 50px rgba(255,165,0,0.18), inset 0 8px 22px rgba(255,255,255,0.22)}
+#themeToggle:active{transform:translateY(0);box-shadow:0 8px 22px rgba(255,140,0,0.14)}
+
+/* Dark theme: darken the outer circle and fade/transform the inner icon */
+html:not([data-theme="light"]) #themeToggle{
+  background: radial-gradient(circle at 40% 30%, #3a3f46 0%, #2a3036 30%, #1b2025 70%);
+  border-color: rgba(255,255,255,0.06);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45), inset 0 4px 12px rgba(255,255,255,0.02);
+}
+
+/* change halo in dark mode */
+html:not([data-theme="light"]) #themeToggle::after{background:radial-gradient(circle, rgba(90,100,120,0.10), transparent 40%);filter:blur(22px)}
+
+/* animate inner icon: scale & fade when switching */
+html:not([data-theme="light"]) #themeToggle::before{transform:scale(0.9) rotate(-12deg);opacity:0.95}
+ [data-theme="light"] #themeToggle::before{transform:scale(1) rotate(0deg);opacity:1}
+
+/* light-theme specific tweaks for cards and gentle depth */
+[data-theme="light"] body{background-attachment:fixed}
+[data-theme="light"] .card{background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(250,250,252,0.9));box-shadow:0 8px 20px rgba(15,23,42,0.04);border:1px solid var(--border)}
+
+/* gentle transitions when switching themes */
+body, .card, .wrap, .container, input, button, select, textarea{transition:background-color 240ms ease, color 240ms ease, border-color 240ms ease, box-shadow 240ms ease}
+
+/* Dark-theme soft blue edge glows: originate from edges, fade toward center */
+html:not([data-theme="light"]) body::before,
+html:not([data-theme="light"]) body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  mix-blend-mode:screen;
+  transition:opacity 360ms ease, transform 360ms ease;
+}
+
+html:not([data-theme="light"]) body::before{
+  background-image:
+    radial-gradient(920px 560px at 0% 8%, rgba(77,163,255,0.42) 0%, rgba(77,163,255,0.20) 26%, transparent 52%),
+    radial-gradient(820px 500px at 100% 92%, rgba(77,163,255,0.34) 0%, rgba(77,163,255,0.18) 24%, transparent 50%),
+    radial-gradient(480px 340px at 6% 20%, rgba(77,163,255,0.14) 0%, rgba(77,163,255,0.06) 36%, transparent 62%),
+    radial-gradient(220px 160px at 12% 14%, rgba(77,163,255,0.10) 0%, transparent 48%);
+  filter:blur(22px);
+  opacity:1;
+}
+
+html:not([data-theme="light"]) body::after{
+  /* brighter, more numerous stars layered above the blue glows */
+  background-image:
+    radial-gradient(3.2px 3.2px at 3% 6%, rgba(255,255,255,1) 0%, transparent 60%),
+    radial-gradient(2.6px 2.6px at 9% 14%, rgba(255,255,255,0.9) 0%, transparent 60%),
+    radial-gradient(2.8px 2.8px at 16% 6%, rgba(255,255,255,0.96) 0%, transparent 60%),
+    radial-gradient(1.8px 1.8px at 24% 22%, rgba(255,255,255,0.7) 0%, transparent 60%),
+    radial-gradient(3.6px 3.6px at 32% 10%, rgba(255,255,255,1) 0%, transparent 60%),
+    radial-gradient(2.0px 2.0px at 40% 26%, rgba(255,255,255,0.72) 0%, transparent 60%),
+    radial-gradient(3.0px 3.0px at 48% 12%, rgba(255,255,255,0.98) 0%, transparent 60%),
+    radial-gradient(2.2px 2.2px at 56% 24%, rgba(255,255,255,0.78) 0%, transparent 60%),
+    radial-gradient(3.4px 3.4px at 64% 8%, rgba(255,255,255,1) 0%, transparent 60%),
+    radial-gradient(2.4px 2.4px at 72% 20%, rgba(255,255,255,0.76) 0%, transparent 60%),
+    radial-gradient(3.0px 3.0px at 80% 6%, rgba(255,255,255,0.96) 0%, transparent 60%),
+    radial-gradient(1.6px 1.6px at 88% 18%, rgba(255,255,255,0.7) 0%, transparent 60%),
+    radial-gradient(760px 420px at 50% 0%, rgba(77,163,255,0.36) 0%, rgba(77,163,255,0.16) 30%, transparent 58%),
+    radial-gradient(760px 420px at 50% 100%, rgba(77,163,255,0.30) 0%, rgba(77,163,255,0.12) 30%, transparent 58%),
+    radial-gradient(360px 240px at 50% 6%, rgba(77,163,255,0.12) 0%, rgba(77,163,255,0.05) 40%, transparent 66%),
+    radial-gradient(160px 120px at 50% 14%, rgba(77,163,255,0.08) 0%, transparent 50%);
+  filter:blur(12px);
+  opacity:1;
+  background-repeat:no-repeat;
+  background-position:top center;
+}
+
+/* Tweak intensity on smaller screens so blobs remain soft and not overpowering */
+@media (max-width:640px){
+  html:not([data-theme="light"]) body::before{filter:blur(20px);opacity:1;background-size:120% 120%}
+  html:not([data-theme="light"]) body::after{filter:blur(22px);opacity:1;background-size:140% 140%}
+}
+
+/* Light-theme soft grey edge punch: originate from edges, fade toward center */
+[data-theme="light"] body::before,
+[data-theme="light"] body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  mix-blend-mode:multiply;
+  transition:opacity 360ms ease, transform 360ms ease;
+}
+
+[data-theme="light"] body::before{
+  /* stronger sky + more visible cloud shapes at top */
+  background-image:
+    linear-gradient(180deg, rgba(135,206,250,0.32) 0%, rgba(255,255,255,0) 28%),
+    radial-gradient(260px 90px at 6% 6%, rgba(135,206,250,0.28), transparent 60%),
+    radial-gradient(320px 110px at 22% 6%, rgba(120,190,245,0.24), transparent 60%),
+    radial-gradient(340px 120px at 48% 10%, rgba(135,206,250,0.22), transparent 60%),
+    radial-gradient(260px 90px at 76% 12%, rgba(120,190,245,0.18), transparent 60%),
+    radial-gradient(980px 560px at 0% 8%, rgba(90,98,108,0.44) 0%, rgba(90,98,108,0.22) 26%, transparent 52%),
+    radial-gradient(880px 540px at 100% 92%, rgba(90,98,108,0.36) 0%, rgba(90,98,108,0.18) 24%, transparent 50%),
+    radial-gradient(560px 380px at 6% 20%, rgba(90,98,108,0.26) 0%, rgba(90,98,108,0.12) 36%, transparent 62%),
+    radial-gradient(300px 200px at 10% 16%, rgba(90,98,108,0.14) 0%, transparent 48%);
+  filter:blur(20px);
+  opacity:1;
+  background-repeat:no-repeat;
+  background-position:top center;
+}
+
+[data-theme="light"] body::after{
+  background-image:
+    radial-gradient(820px 460px at 50% 0%, rgba(90,98,108,0.40) 0%, rgba(90,98,108,0.18) 30%, transparent 58%),
+    radial-gradient(820px 460px at 50% 100%, rgba(90,98,108,0.34) 0%, rgba(90,98,108,0.14) 30%, transparent 58%),
+    radial-gradient(420px 280px at 50% 6%, rgba(90,98,108,0.20) 0%, rgba(90,98,108,0.10) 40%, transparent 66%),
+    radial-gradient(200px 140px at 50% 14%, rgba(90,98,108,0.12) 0%, transparent 50%);
+  filter:blur(26px);
+  opacity:1;
+}
+
+@media (max-width:640px){
+  [data-theme="light"] body::before{filter:blur(22px);opacity:1;background-size:120% 120%}
+  [data-theme="light"] body::after{filter:blur(20px);opacity:1;background-size:140% 140%}
+}
+
+/* language switcher (shared look) */
+.lang-switch{display:flex;gap:8px;justify-content:flex-end;margin-bottom:16px;align-items:center; padding-right:72px}
+.lang-btn{padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-size:12px}
+.lang-btn.active{color:var(--accent);border-color:var(--accent)}
+
+/* Dashboard specific styles (moved from monitor/static/dashboard.css) */
+.container{padding:20px}
+.dashboard-header{margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.site-card{padding:16px;border-radius:12px;background:var(--card);border:1px solid var(--border);box-shadow:0 6px 18px rgba(15,23,42,0.04)}
+.site-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.badge-up{background:#e6fff7;color:#06684a;padding:6px 10px;border-radius:999px;font-weight:600}
+.badge-down{background:#fff1f0;color:#7a1220;padding:6px 10px;border-radius:999px;font-weight:600}
+canvas{width:100%;height:56px;display:block}
+.controls-row{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.muted{color:var(--muted)}
+
+@media (max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .site-card{padding:12px}
+  /* make theme toggle a small circular button on mobile and move to left */
+  #themeToggle{right:auto;left:12px;top:12px;padding:0;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);box-shadow:0 4px 10px rgba(0,0,0,0.15);overflow:hidden;background:var(--card);border-color:var(--border);font-size:20px}
+}

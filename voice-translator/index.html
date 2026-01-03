@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Голосовой переводчик — Demo</title>
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script src="../theme.js"></script>
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn active" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="ro">RO</button>
+  </div>
+  <main class="container">
+    <a href="../index.html" data-i18n="back" class="back-link"></a>
+    <h1 data-i18n="voice_title">Голосовой переводчик — Demo</h1>
+
+    <div class="controls">
+      <label>Исходный язык
+        <select id="sourceLang">
+          <option value="auto">Авто (auto)</option>
+          <option value="en">English</option>
+          <option value="ru" selected>Русский</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </label>
+
+      <label>Целевой язык
+        <select id="targetLang">
+          <option value="en">English</option>
+          <option value="ru" selected>Русский</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="controls">
+      <label>API-эндпойнт для перевода
+        <input id="apiEndpoint" type="text" placeholder="https://libretranslate.de/translate" />
+      </label>
+      <div class="row" style="margin-top:6px">
+        <button id="saveEndpoint" class="btn btn-small">Сохранить эндпойнт</button>
+        <button id="testEndpoint" class="btn btn-small">Проверить эндпойнт</button>
+        <small style="margin-left:8px;color:#666">Можно указать свой экземпляр LibreTranslate или прокси для обхода CORS.</small>
+      </div>
+      <div id="message" class="message" style="margin-top:8px;"></div>
+    </div>
+
+    <div class="top-row">
+      <div class="rec">
+        <button id="toggleRec" data-i18n="start_record">Начать запись</button>
+        <span id="status" class="status">Готов</span>
+      </div>
+
+      <div class="tts-opts">
+        <label>Голос (TTS)
+          <select id="voiceSelect"></select>
+        </label>
+      </div>
+
+      <details class="tts-advanced" id="ttsDetails">
+        <summary>Параметры TTS</summary>
+        <div class="tts-inner">
+          <label>Rate: <input id="ttsRate" type="range" min="0.5" max="2" step="0.1" value="1" /> <span id="ttsRateVal">1</span></label>
+          <label style="margin-left:12px">Pitch: <input id="ttsPitch" type="range" min="0.5" max="2" step="0.1" value="1" /> <span id="ttsPitchVal">1</span></label>
+          <label style="margin-left:12px">Volume: <input id="ttsVolume" type="range" min="0" max="1" step="0.1" value="1" /> <span id="ttsVolumeVal">1</span></label>
+          <div style="margin-top:6px" class="row">
+              <label><input id="autoVoice" type="checkbox" /> Авто-подбор голоса по целевому языку</label>
+              <button id="playSample" class="btn btn-small">Play sample</button>
+            </div>
+        </div>
+      </details>
+
+      <div class="interactive">
+        <label style="display:block;margin-bottom:6px">Интерактивные режимы</label>
+        <button id="pttBtn" class="btn btn-small">Нажать и говорить (Push-to-talk)</button>
+        <label class="auto-stop">Auto-stop (ms)
+          <input id="autoStopTimeout" type="number" value="1500" />
+        </label>
+        <div id="confidence" class="confidence">Confidence: —</div>
+      </div>
+    </div>
+
+    <label>Распознанный текст
+      <textarea id="recognized" rows="4" readonly></textarea>
+    </label>
+    <div class="interim-row">
+      <div id="interim" style="color:#666;margin-top:6px">&nbsp;</div>
+      <div id="detectedLang" style="color:#070;margin-top:6px"></div>
+    </div>
+    
+
+    <label>Перевод
+      <textarea id="translated" rows="4" readonly></textarea>
+    </label>
+
+    <div style="margin-top:6px" class="row">
+      <button id="retryBtn" class="btn btn-small">Повторить перевод</button>
+      <span id="retryStatus" style="margin-left:8px;color:#666"></span>
+    </div>
+
+    <div class="actions">
+      <button id="speakBtn" data-i18n="speak" class="btn">Воспроизвести перевод</button>
+      <button id="clearBtn" data-i18n="clear" class="btn btn-ghost">Очистить</button>
+    </div>
+
+    <details class="section-item" style="margin-top:18px">
+      <summary><h2>История переводов</h2></summary>
+      <div class="row" style="margin-bottom:8px">
+        <input id="historySearch" type="search" placeholder="Поиск по распознанному или переводу" class="flex1" />
+        <button id="exportJsonBtn" class="btn btn-small">Скачать JSON</button>
+        <button id="exportTxtBtn" class="btn btn-small">Скачать TXT</button>
+        <button id="clearHistoryBtn" class="btn btn-small">Очистить историю</button>
+      </div>
+      <div id="historyList" style="max-height:240px;overflow:auto;border:1px solid #ddd;padding:8px;background:#fafafa"></div>
+    </details>
+
+    <details class="section-item" style="margin-top:18px">
+      <summary><h2>Аудио-файлы и субтитры</h2></summary>
+      <div class="row" style="margin-bottom:8px">
+        <label style="flex:1;min-width:0">STT эндпойнт (для распознавания аудио)
+          <input id="sttEndpoint" type="text" placeholder="https://your-stt.example/api/transcribe" />
+        </label>
+        <button id="saveSttEndpoint" class="btn btn-small">Сохранить STT эндпойнт</button>
+      </div>
+      <div style="margin-bottom:8px">
+        <input id="audioFile" type="file" accept="audio/*" />
+        <button id="uploadAudioBtn" class="btn btn-small">Загрузить аудио</button>
+        <button id="convertAudioBtn" class="btn btn-small">Распознать и перевести</button>
+        <button id="exportSrtBtn" class="btn btn-small">Экспорт SRT</button>
+      </div>
+      <div id="audioStatus" style="color:#666;margin-bottom:8px"></div>
+    </details>
+
+    <details class="section-item" style="margin-top:18px">
+      <summary><h2>Логи</h2></summary>
+      <div style="margin-bottom:8px" class="row">
+        <button id="downloadLogsBtn" class="btn btn-small">Скачать логи</button>
+        <button id="clearLogsBtn" class="btn btn-small">Очистить логи</button>
+      </div>
+      <div id="logsList" style="max-height:180px;overflow:auto;border:1px solid #eee;padding:8px;background:#fff"></div>
+    </details>
+
+    <p class="note">Демо использует Web Speech API и LibreTranslate. В некоторых браузерах/окружениях возможны ограничения CORS или отсутствие поддержки API.</p>
+  </main>
+
+  <script src="../translations.js"></script>
+  <script src="../langs.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

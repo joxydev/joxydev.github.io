@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JoxyDev — Junior Portfolio</title>
+  <meta name="description" content="JoxyDev — Junior Python Developer learning Data & AI. Portfolio." />
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 48px 24px; }
+    a { color: var(--accent); text-decoration: none; }
+    header { margin-bottom: 64px; }
+
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+    .lang-btn {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .lang-btn.active { color: var(--accent); border-color: var(--accent); }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(77,163,255,0.08);
+      color: var(--accent);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    h1 { font-size: clamp(32px, 5vw, 48px); margin-bottom: 12px; }
+    h2 { font-size: 28px; margin-bottom: 24px; }
+    p { color: var(--muted); max-width: 720px; }
+
+    section { margin-bottom: 64px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .card h3 { margin-bottom: 8px; font-size: 18px; }
+    .card p { font-size: 14px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="ro">RO</button>
+  </div>
+
+  <header>
+    <span class="badge" data-i18n="badge"></span>
+    <h1>JoxyDev</h1>
+    <p data-i18n="intro"></p>
+  </header>
+
+  <section>
+    <h2 data-i18n="skills_title"></h2>
+    <div class="grid">
+      <div class="card"><h3>Python</h3><p data-i18n="skill_python"></p></div>
+      <div class="card"><h3>Data & AI</h3><p data-i18n="skill_data"></p></div>
+      <div class="card"><h3>Automation</h3><p data-i18n="skill_auto"></p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="projects_title"></h2>
+    <div class="grid">
+      <div class="card">
+        <h3><a class="card-link" href="voice-translator/index.html"><span data-i18n="p1_title"></span></a></h3>
+        <p data-i18n="p1_desc"></p>
+      </div>
+      <div class="card"><h3 data-i18n="p2_title"></h3><p data-i18n="p2_desc"></p></div>
+      <div class="card"><h3 data-i18n="p3_title"></h3><p data-i18n="p3_desc"></p></div>
+      <div class="card">
+        <h3><a class="card-link" href="monitor/dashboard.html"><span data-i18n="p4_title"></span></a></h3>
+        <p data-i18n="p4_desc"></p>
+      </div>
+      <div class="card">
+        <h3><a class="card-link" href="text-analyzer/index.html"><span data-i18n="p5_title"></span></a></h3>
+        <p data-i18n="p5_desc"></p>
+      </div>
+      <div class="card">
+        <h3><a class="card-link" href="crypto-tracker.html"><span data-i18n="p6_title"></span></a></h3>
+        <p data-i18n="p6_desc"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 JoxyDev</div>
+    <div data-i18n="footer"></div>
+  </footer>
+
+</div>
+
+<script>
+const translations = {
+  en: {
+    badge: 'Junior · Learning · Open to Growth',
+    intro: 'Junior Python developer at the beginning of my career. I am actively learning data analysis, automation and AI tools through small practical projects and real code.',
+    skills_title: 'Currently learning & using',
+    skill_python: 'Basic to intermediate Python. Learning through practice and small applications.',
+    skill_data: 'Fundamentals of data analysis and AI concepts. Learning step by step.',
+    skill_auto: 'Automation scripts, simple desktop tools, API experiments.',
+    projects_title: 'Learning Projects',
+    p1_title: 'Voice Translation App',
+    p1_desc: 'Educational desktop project to understand speech processing and APIs.',
+    p2_title: 'Website Monitoring Tool',
+    p2_desc: 'Simple Python tool for monitoring websites and saving data.',
+    p3_title: 'AI & LLM Experiments',
+    p3_desc: 'Small experiments to understand how modern AI tools work.',
+    p4_title: 'Live Monitor (Demo)',
+    p4_desc: 'Client-side demo to check URL availability and latency (may be CORS-limited).',
+    p5_title: 'Text Analyzer (Demo)',
+    p5_desc: 'Grammar, punctuation and spelling checker with suggestions (RU/EN).',
+    p6_title: 'Crypto Tracker (Demo)',
+    p6_desc: 'Fetches crypto prices from CoinGecko, stores history in localStorage and shows a simple chart.',
+    footer: 'Open for junior positions · Ready to learn'
+  },
+  ru: {
+    badge: 'Junior · Обучаюсь · Открыт к росту',
+    intro: 'Начинающий Python-разработчик. Активно изучаю анализ данных, автоматизацию и AI через практические проекты и работу с реальным кодом.',
+    skills_title: 'Изучаю и применяю',
+    skill_python: 'Python базовый–средний уровень. Обучение через практику.',
+    skill_data: 'Основы анализа данных и AI. Пошаговое изучение.',
+    skill_auto: 'Скрипты автоматизации, простые desktop-приложения.',
+    projects_title: 'Учебные проекты',
+    p1_title: 'Голосовой переводчик',
+    p1_desc: 'Учебное desktop-приложение для понимания работы с речью и API.',
+    p2_title: 'Мониторинг сайтов',
+    p2_desc: 'Простой Python-инструмент для мониторинга сайтов и сохранения данных.',
+    p3_title: 'Голосовой переводчик',
+    p3_desc: 'Учебное desktop-приложение для понимания работы с речью и API.',
+    p4_title: 'Live Monitor (Demo)',
+    p4_desc: 'Демо в браузере для проверки доступности URL и задержки (ограничения CORS возможны).',
+    p5_title: 'Text Analyzer (Demo)',
+    p5_desc: 'Проверка грамматики, пунктуации и орфографии с предложениями исправлений (RU/EN).',
+    p6_title: 'Crypto Tracker (Demo)',
+    p6_desc: 'Получает цены криптовалют с CoinGecko, сохраняет историю в localStorage и показывает простую диаграмму.',
+    footer: 'Открыт для junior-позиций · Готов учиться'
+  },
+  ro: {
+    badge: 'Junior · Învățare · Deschis pentru creștere',
+    intro: 'Dezvoltator Python junior la început de carieră. Învăț analiza datelor, automatizarea și AI prin proiecte practice.',
+    skills_title: 'Învăț și folosesc',
+    skill_python: 'Python nivel de bază–mediu. Învățare prin practică.',
+    skill_data: 'Fundamente de analiză a datelor și AI.',
+    skill_auto: 'Scripturi de automatizare și aplicații simple.',
+    projects_title: 'Proiecte de învățare',
+    p1_title: 'Aplicație de traducere vocală',
+    p1_desc: 'Proiect educațional pentru înțelegerea procesării vocii.',
+    p2_title: 'Monitorizare site-uri',
+    p2_desc: 'Instrument simplu Python pentru monitorizarea site-urilor.',
+    p3_title: 'Aplicație de traducere vocală',
+    p3_desc: 'Proiect educațional pentru înțelegerea procesării vocii.',
+    p4_title: 'Live Monitor (Demo)',
+    p4_desc: 'Demo în browser pentru verificarea disponibilității URL și latenței (posibile limitări CORS).',
+    p5_title: 'Text Analyzer (Demo)',
+    p5_desc: 'Verificare gramatică, punctuație și ortografie cu sugestii (EN/RU).',
+    p6_title: 'Crypto Tracker (Demo)',
+    p6_desc: 'Preia prețuri crypto de la CoinGecko, salvează istoricul în localStorage și afișează un grafic simplu.',
+    footer: 'Deschis pentru poziții junior · Dornic să învăț'
+  }
+};
+
+function setLang(lang) {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = translations[lang][el.dataset.i18n];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+}
+
+// Event listeners (prevents undefined event.target)
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => setLang(btn.dataset.lang));
+});
+
+setLang('en');
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

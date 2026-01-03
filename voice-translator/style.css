@@ -1,0 +1,78 @@
+*{box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text);transition:background-color 220ms ease,color 220ms ease}
+.container{max-width:920px;margin:48px auto;padding:20px;background:var(--card);border-radius:10px;box-shadow:0 6px 18px rgba(15,23,42,0.06);border:1px solid var(--border)}
+h1{margin:0 0 16px;font-size:20px}
+.controls{display:flex;gap:12px;margin-bottom:12px}
+ .controls{flex-wrap:wrap}
+label{display:flex;flex-direction:column;font-size:13px}
+select,textarea{margin-top:6px;padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);transition:background-color 180ms ease,color 180ms ease,border-color 180ms ease}
+.rec{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.tts-opts{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+/* Button utilities */
+button, .btn{background:var(--accent-btn, var(--accent));color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-small{padding:6px 8px;font-size:13px;border-radius:8px}
+.btn.icon-only{padding:8px;width:40px;height:40px;justify-content:center}
+button[disabled]{opacity:0.6;cursor:default}
+.status{font-size:13px;color:var(--muted)}
+.actions{display:flex;gap:8px;margin-top:8px}
+.note{margin-top:14px;color:var(--muted);font-size:13px}
+
+/* Top row grouping for main controls */
+.top-row{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.top-row .rec{display:flex;gap:8px;align-items:center}
+.tts-advanced{margin-top:0}
+.interactive{display:flex;gap:8px;align-items:center}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row .flex1{flex:1;min-width:0}
+.interactive .auto-stop{margin-left:6px;display:flex;align-items:center}
+.interactive .confidence{margin-top:6px;color:var(--muted)}
+
+/* Language switch in header */
+.lang-switch{position:fixed;right:68px;top:20px;display:flex;gap:8px;z-index:1002}
+.lang-btn{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);padding:6px 8px;border-radius:8px;cursor:pointer;font-size:12px}
+.lang-btn:hover{filter:brightness(1.08)}
+.lang-btn.active{background:var(--accent-btn, var(--accent));color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(43,126,207,0.12)}
+
+/* Responsive adjustments */
+@media (max-width:720px){
+ 	.container{margin:28px auto;padding:12px}
+	h1{font-size:18px}
+	.controls{flex-direction:column}
+	.top-row{flex-direction:column;align-items:stretch}
+	/* keep record button and status aligned */
+	.top-row .rec{display:flex;gap:8px;align-items:center}
+	.top-row .rec button{flex:1;padding:10px 12px;font-size:15px}
+	.top-row .rec .status{white-space:nowrap;margin-left:8px;font-size:13px}
+	.interactive{justify-content:flex-start;flex-wrap:wrap;gap:8px}
+	.interactive .auto-stop input{width:72px}
+	.actions{flex-direction:column}
+	button, .btn{width:100%;padding:10px 12px;font-size:15px;border-radius:10px}
+	select,input[type="search"],input[type="text"],input[type="number"]{width:100%;font-size:14px}
+	textarea{width:100%}
+	.tts-advanced summary{padding:8px 10px}
+	.tts-advanced .tts-inner label{display:block;margin-bottom:8px}
+}
+
+/* details/summary styling for dropdowns/sections */
+details{border:1px solid var(--border);border-radius:8px;padding:0;background:transparent;margin-bottom:12px}
+details[open]{background:var(--card)}
+details summary{list-style:none;cursor:pointer;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;font-weight:600}
+details summary h2{margin:0;font-size:15px}
+.tts-inner, details .section-item > *:not(summary){padding:12px;border-top:1px solid rgba(0,0,0,0.04);background:var(--card)}
+.tts-advanced summary{background:transparent;padding:8px 10px;border-radius:8px}
+.section-item{overflow:hidden}
+
+/* summary caret */
+details summary::marker{display:none}
+details summary::after{content:'▸';font-size:12px;transform:rotate(0);transition:transform 160ms ease;margin-left:8px}
+details[open] summary::after{transform:rotate(90deg)}
+
+/* reduce visual weight of big endpoint buttons on mobile */
+.controls > div > button{border-radius:10px}
+
+@media (max-width:720px){
+	.lang-switch{right:12px;top:20px}
+	/* ensure language buttons remain compact on small screens */
+	.lang-btn{padding:6px;border-radius:8px;font-size:12px}
+}
