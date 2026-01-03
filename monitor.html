@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Live Monitor — JoxyDev Demo</title>
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    /* place the language switch near the top-right like other pages */
+    .lang-switch.fixed{position:fixed;top:18px;right:104px;z-index:1001}
+    @media (max-width:640px){.lang-switch.fixed{position:static;margin-bottom:12px;padding-right:0}}
+    body{font-family:Inter,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px}
+    .wrap{max-width:900px;margin:0 auto}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:18px;border-radius:12px}
+    input,button,select{padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+    .row{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    pre{background:var(--card);padding:12px;border-radius:8px;overflow:auto;color:var(--text);border:1px solid var(--border)}
+    a{color:var(--accent)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="lang-switch fixed">
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn active" data-lang="ru">RU</button>
+      <button class="lang-btn" data-lang="ro">RO</button>
+    </div>
+    <header style="margin-bottom:18px">
+      <a href="index.html" data-i18n="back">← Back</a>
+      <h1 data-i18n="monitor_title">Live Monitor (Demo)</h1>
+      <p style="color:var(--muted)" data-i18n="results_label">Browser demo: check a URL and measure response time. Note: many sites block cross-origin requests (CORS).</p>
+    </header>
+
+    <div class="card">
+      <div class="row">
+        <input id="url" type="text" placeholder="https://example.com/" style="flex:1" value="https://jsonplaceholder.typicode.com/posts/1" />
+        <button id="checkBtn">Check</button>
+        <label style="color:var(--muted)"><input id="auto" type="checkbox" style="margin-right:6px" /> Auto</label>
+        <input id="interval" type="number" value="5" min="1" style="width:72px" />s
+      </div>
+      <div style="margin-bottom:12px">
+        <small style="color:var(--muted)" data-i18n="results_label">Results:</small>
+        <pre id="out">No checks yet.</pre>
+      </div>
+
+      <div style="margin-top:12px;color:var(--muted)">
+        <strong>Server-side alternative</strong>
+        <p data-i18n="server_alt">If the browser shows CORS/network errors, run the server monitor (no CORS restrictions):</p>
+        <pre style="padding:10px;border-radius:8px;color:var(--text);background:var(--card);border:1px solid var(--border)">pip install -r monitor/requirements.txt
+      python monitor/monitor.py --urls monitor/urls.txt --output monitor/results.csv --once</pre>
+        <p>See more details: <a href="monitor/README.md" target="_blank" rel="noopener noreferrer">monitor/README.md</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const urlInput = document.getElementById('url');
+    const out = document.getElementById('out');
+    const checkBtn = document.getElementById('checkBtn');
+    const auto = document.getElementById('auto');
+    const intervalInput = document.getElementById('interval');
+    let timer = null;
+
+    async function checkOnce() {
+      const url = urlInput.value.trim();
+      if (!url) return;
+      out.textContent = 'Checking ' + url + ' ...';
+      const t0 = performance.now();
+      try {
+        const res = await fetch(url, { method: 'GET', mode: 'cors' });
+        const t1 = performance.now();
+        const time = Math.round(t1 - t0);
+        // If response is opaque it may mean the server did not send CORS headers
+        if (res.type === 'opaque') {
+          out.textContent = `Response received but opaque (no CORS headers).\nTime: ${time} ms\nURL: ${url}\nNote: the server did not expose CORS headers; try server-side monitoring.`;
+          return;
+        }
+        out.textContent = `Status: ${res.status} ${res.statusText}\nTime: ${time} ms\nURL: ${url}`;
+      } catch (err) {
+        const t1 = performance.now();
+        const time = Math.round(t1 - t0);
+        const message = err && err.message ? err.message : String(err);
+        let hint = 'This may be due to CORS (cross-origin) restrictions or a network error.';
+        if (/failed to fetch/i.test(message) || /network request failed/i.test(message) || /typeerror/i.test(message)) {
+          hint = 'Likely CORS or network error. The browser blocked the response — try the server-side monitor.';
+        }
+        out.textContent = `Error: ${message}\nElapsed: ${time} ms\nHint: ${hint}`;
+      }
+    }
+
+    checkBtn.addEventListener('click', () => checkOnce());
+
+    auto.addEventListener('change', () => {
+      if (auto.checked) {
+        const sec = Math.max(1, Number(intervalInput.value) || 5);
+        timer = setInterval(checkOnce, sec * 1000);
+        checkOnce();
+      } else {
+        clearInterval(timer);
+        timer = null;
+      }
+    });
+  </script>
+  <script src="translations.js"></script>
+  <script src="theme.js"></script>
+</body>
+</html>
