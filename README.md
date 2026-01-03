@@ -1,2 +1,0 @@
-# joxydev.github.io
-Portfolio
