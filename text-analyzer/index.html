@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Text Analyzer — Demo</title>
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script src="../theme.js"></script>
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn active" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="ro">RO</button>
+  </div>
+  <main class="wrap">
+    <a href="../index.html" data-i18n="back">← Back</a>
+    <h1 data-i18n="text_analyzer_title">Text Analyzer (Demo)</h1>
+    <p class="muted">Проверка орфографии, пунктуации и грамматики (RU/EN). Использует LanguageTool API — при CORS запустите серверный proxy.</p>
+
+    <div class="controls">
+      <select id="lang">
+        <option value="auto">Auto-detect</option>
+        <option value="en-US">English</option>
+        <option value="ru-RU" selected>Русский</option>
+      </select>
+      <button id="checkBtn">Проверить</button>
+      <button id="applyAllBtn">Применить всё</button>
+      <button id="copyBtn">Копировать</button>
+      <button id="downloadBtn">Скачать</button>
+    </div>
+
+    <div class="editor">
+      <textarea id="source" placeholder="Вставьте текст здесь..." spellcheck="true"></textarea>
+      <div id="preview" contenteditable="true" aria-label="Preview with highlights"></div>
+    </div>
+
+    <section class="suggestions">
+      <h2>Предложения</h2>
+      <div id="suggestList">Пока нет результатов.</div>
+    </section>
+
+    <section class="notes">
+      <h3>Инструкция если CORS</h3>
+      <p>Если браузер блокирует запросы к LanguageTool, запустите локальный proxy (см. README).</p>
+    </section>
+  </main>
+
+  <script src="../translations.js"></script>
+  <script src="../langs.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
